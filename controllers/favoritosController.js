@@ -32,7 +32,7 @@ async function removeFavorito(req, res) {
     const { produtoId } = req.params;
     try {
         const usuario = await Usuario.findById(req.user._id);
-        const indexToRemove = usuario.favoritos.findIndex(favorito => favorito.produtoId._id.toString() === produtoId || produtoId._id);
+        const indexToRemove = usuario.favoritos.findIndex(favorito => favorito.produtoId._id.toString() === produtoId);
         if (indexToRemove === -1) {
             return res.status(404).json({ message: 'Favorito não encontrado' });
         }
@@ -53,7 +53,7 @@ async function isFavoritado(req, res) {
         }
         console.log(produtoId);
         const isFavorito = usuario.favoritos.some(favorito => {
-            return favorito.produtoId._id.toString() === produtoId || produtoId._id;
+            return favorito.produtoId._id.toString() === produtoId;
         });
 
         res.status(200).json({ isFavorito });
