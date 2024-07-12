@@ -29,10 +29,10 @@ async function addFavorito(req, res) {
 }
 
 async function removeFavorito(req, res) {
-    const { produtoId } = req.params;
+    const { _id } = req.params;
     try {
         const usuario = await Usuario.findById(req.user._id);
-        const indexToRemove = usuario.favoritos.findIndex(favorito => favorito.produtoId._id.toString() === produtoId);
+        const indexToRemove = usuario.favoritos.findIndex(favorito => favorito.produtoId._id.toString() === _id);
         if (indexToRemove === -1) {
             return res.status(404).json({ message: 'Favorito não encontrado' });
         }
@@ -45,16 +45,15 @@ async function removeFavorito(req, res) {
     }
 }
 async function isFavoritado(req, res) {
-    const { produtoId } = req.params;
+    const { _id } = req.params;
     try {
         const usuario = await Usuario.findById(req.user._id);
         if (!usuario) {
             return res.status(404).send('Usuário não encontrado');
         }
         const isFavorito = usuario.favoritos.some(favorito => {
-            return favorito.produtoId._id.toString() === produtoId;
+            return favorito.produtoId._id.toString() === _id;
         });
-
         res.status(200).json({ isFavorito });
     } catch (error) {
         console.error('Erro ao verificar se é favorito:', error);
