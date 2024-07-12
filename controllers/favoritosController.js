@@ -51,6 +51,7 @@ async function isFavoritado(req, res) {
         if (!usuario) {
             return res.status(404).send('Usuário não encontrado');
         }
+        console.log(produtoId);
         const isFavorito = usuario.favoritos.some(favorito => {
             return favorito.produtoId._id.toString() === produtoId || produtoId._id;
         });
