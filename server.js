@@ -3,6 +3,7 @@ const express = require('express');
 const connectDB = require('./config/dbConnect.js');
 const routes = require('./routes/index.js');
 const cors = require('cors');
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -10,12 +11,25 @@ app.use(cors());
 app.use(express.json());
 app.use(routes);
 
-const startServer = async () => {
-    await connectDB();
+// Middleware para capturar e logar erros
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 
-    app.listen(port, () => {
-        console.log(`Servidor rodando na porta ${port}`);
-    });
+const startServer = async () => {
+    try {
+        await connectDB();
+        app.listen(port, () => {
+            console.log(`Servidor rodando na porta ${port}`);
+        });
+    } catch (error) {
+        console.error('Erro ao iniciar o servidor:', error);
+        process.exit(1); // Sai do processo com erro
+    }
 };
+
 startServer();
-module.exports = { app, connectDB };
+
+// Exporta a aplicação express
+module.exports = app;
