@@ -1,4 +1,7 @@
-const mongoose  = require("mongoose");
+const mongoose = require("mongoose");
+const bcrypt = require('bcrypt');
+const endereco = require('./Endereco.js');
+const itemFavoritoSchema = require('./Favoritos.js');
 
 const usuarioSchema = new mongoose.Schema(
     {
@@ -16,18 +19,20 @@ const usuarioSchema = new mongoose.Schema(
             type: String,
             required: [true, "A senha do usuário é obrigatória"]
         },
-        endereco: {
-            type: enderecoSchema,
-            required: [true, "O endereço é obrigatório"]
-        },
-        carrinho: {
-            type: [itemCarrinhoSchema],
-            default: []
-        }
+        endereco: endereco,
+        favoritos: [itemFavoritoSchema]
     },
     { timestamps: true }
 );
+usuarioSchema.methods.comparePassword = async function (senha) {
+    try {
+        const isMatch = await bcrypt.compare(senha, this.senha);
+        return isMatch;
+    } catch (error) {
+        throw new Error('Erro ao comparar as senhas');
+    }
+};
 
-const Usuario = mongoose.model("Usuario", usuarioSchema);
-
+const collectionName = process.env.COLLECTION_NAME2;
+const Usuario = mongoose.model("Usuario", usuarioSchema, collectionName);
 module.exports = Usuario;

@@ -1,13 +1,13 @@
-// const express = require('express');
-// const AutorController = require('../controllers/autoresController.js');
+const express = require("express");
+const usuarioController = require('../controllers/usuariosController.js');
+const router = express.Router();
 
-// const router = express.Router();
+router.post("/", usuarioController.createUsuario);
+router.post("/registro", usuarioController.registrarUsuario);
+router.get("/", usuarioController.getUsuarios);
+router.get("/:id", usuarioController.getUsuarioById);
+router.put("/:id", usuarioController.updateUsuario);
+router.delete("/:id", usuarioController.deleteUsuario);
+router.post("/login", usuarioController.login);
 
-// router
-//   .get("/autores", AutorController.listarAutores, paginar)
-//   .get("/autores/:id", AutorController.listarAutorPorId)
-//   .post("/autores", AutorController.cadastrarAutor)
-//   .put("/autores/:id", AutorController.atualizarAutor)
-//   .delete("/autores/:id", AutorController.excluirAutor);
-
-// module.exports = router;
+module.exports = router;

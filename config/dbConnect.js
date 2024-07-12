@@ -8,12 +8,11 @@ const connectDB = async () => {
     try {
         await mongoose.connect(
             `mongodb+srv://${dbUser}:${dbPassword}@cluster0.r1lpgce.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=Cluster0`,
-            { useNewUrlParser: true, useUnifiedTopology: true }
         );
         console.log("Conectou ao banco de dados");
     } catch (error) {
         console.error("Erro ao conectar ao banco de dados:", error);
-        process.exit(1);
+        throw error;
     }
 };
 

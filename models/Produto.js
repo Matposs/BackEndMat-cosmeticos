@@ -33,7 +33,7 @@ const produtoSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
-const collectionName = process.env.COLLECTION_NAME;
+const collectionName = process.env.COLLECTION_NAME1;
 const Produto = mongoose.model("Produto", produtoSchema, collectionName);
 
 module.exports = Produto;
