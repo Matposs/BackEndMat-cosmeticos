@@ -23,8 +23,7 @@ async function addFavorito(req, res) {
         await usuario.save();
         res.status(200).json(usuario.favoritos);
     } catch (error) {
-        console.log(error);
-        res.status(500).send('Erro ao adicionar favorito.');
+        res.status(500).send('Erro ao adicionar favorito.', error);
     }
 }
 
@@ -51,7 +50,6 @@ async function isFavoritado(req, res) {
         if (!usuario) {
             return res.status(404).send('Usuário não encontrado');
         }
-        console.log(produtoId);
         const isFavorito = usuario.favoritos.some(favorito => {
             return favorito.produtoId._id.toString() === _id;
         });
